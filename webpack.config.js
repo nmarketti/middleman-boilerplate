@@ -11,6 +11,7 @@ module.exports = {
         site: "./source/javascripts/site.js",
         vendor: [
                 "jquery",
+                "flexboxgrid",
                 "ScrollMagic",
                 "debug.addIndicators",
                 "animation.gsap",
@@ -27,6 +28,7 @@ module.exports = {
     resolve: {
         alias: {
             "ScrollMagic": __dirname + '/node_modules/scrollmagic/scrollmagic/uncompressed/ScrollMagic',
+            "flexboxgrid": __dirname + '/node_modules/flexboxgrid/css/flexboxgrid.css',
             "debug.addIndicators": __dirname + '/node_modules/scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators',
             "animation.gsap": __dirname + '/node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap',
             "TweenMax": __dirname + '/node_modules/gsap/src/uncompressed/TweenMax',
@@ -38,7 +40,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.(scss|sass)$/,
+                test: /\.(scss|sass|css)$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: [
