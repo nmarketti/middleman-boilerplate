@@ -1,0 +1,14 @@
+s3_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+s3_secret: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+s3_bucket: bucket name
+cloudfront_distribution_id: id
+
+
+cache_control:
+    "fonts/*": public, max-age=31536000
+    "images/*": public, max-age=2592000
+    "javascripts/*": public, max-age=604800
+    "stylesheets/*": public, max-age=604800
+
+s3_reduced_redundancy: true
+
