@@ -67,9 +67,5 @@ module.exports = {
         new UglifyJSPlugin({
             compress: { warnings: false }
         }),
-
-        //new BundleAnalyzerPlugin(),
-
-        //new CompressionPlugin({})
     ]
 }
