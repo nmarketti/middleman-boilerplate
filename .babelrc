@@ -1,8 +1,3 @@
 {
-<<<<<<< HEAD
-    "presets":["env"]
-  }
-=======
   "presets":["env"]
 }
->>>>>>> v1
