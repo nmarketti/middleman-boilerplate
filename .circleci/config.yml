@@ -133,13 +133,8 @@ workflows:
       - "development":
           filters:
             branches:
-<<<<<<< HEAD:.circleci/config.yml
-              only: dev
-      - master:
-=======
               only: development
       - "master":
->>>>>>> v1:.circleci/config.yml
           filters:
             branches:
               only: master
