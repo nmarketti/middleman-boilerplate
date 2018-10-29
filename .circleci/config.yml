@@ -1,0 +1,216 @@
+version: 2.0 
+
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.4.1-node
+    steps:
+      - checkout
+      
+      # Restore bundle cache
+      - restore_cache:
+           keys: 
+             - bundle-{{ checksum "Gemfile.lock" }}
+
+      # Run the bundle install command
+      - run: 
+         name: Bundle Update
+         command: gem install bundler --pre      
+        
+      # Run the bundle install command
+      - run: 
+         name: Bundle Install
+         command: bundle install --path vendor/bundle
+      
+      # Store the bundle cache 
+      - type: cache-save
+        key: bundle-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      # Restore bundle cache
+      - restore_cache:
+           keys: 
+             - npm-cache-{{ checksum "package.json" }}
+             - npm-cache-
+
+      # Install NPM
+      - run: 
+         name: NPM Install
+         command: npm install 
+
+      # Save an updated cache of NPM
+      - type: cache-save
+        key: npm-cache-{{ checksum "package.json" }}
+        paths:
+          - node_modules
+
+     # Build middleman
+      - run:
+         name: Build Middleman
+         command: middleman build
+
+      - run:
+         name: Update the proper packages
+         command: sudo apt-get update
+         
+     # Install OpenJRE for S3 Website. This will move to a custom Docker container in a future release
+      - run:
+         name: Install OpenJRE
+         command: sudo apt-get install --assume-yes openjdk-7-jre
+
+     # Push to S3 and CloudFront if configured
+      - run:
+         name: Push to S3 and Invalidate
+         command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              s3_website push --config-dir .deploy/production --force
+            else
+              s3_website push --config-dir .deploy/development --force
+            fi
+      # DatoCMS Intergration
+      # - run:
+      #    name: Send CURL to DatoCMS
+      #    command: "curl -n -X POST https://replacey-with-deploy-url -H 'Content-Type: application/json' -d '{ \"status\": \"success\" }'"
+
+
+  "development":
+    docker:
+      - image: circleci/ruby:2.4.1-node
+    steps:
+      - checkout
+      
+      # Restore bundle cache
+      - restore_cache:
+           keys: 
+             - bundle-{{ checksum "Gemfile.lock" }}
+
+      # Run the bundle install command
+      - run: 
+         name: Bundle Update
+         command: gem install bundler --pre      
+        
+      # Run the bundle install command
+      - run: 
+         name: Bundle Install
+         command: bundle install --path vendor/bundle
+      
+      # Store the bundle cache 
+      - type: cache-save
+        key: bundle-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      # Restore bundle cache
+      - restore_cache:
+           keys: 
+             - npm-cache-{{ checksum "package.json" }}
+             - npm-cache-
+
+      # Install NPM
+      - run: 
+         name: NPM Install
+         command: npm install 
+
+      # Save an updated cache of NPM
+      - type: cache-save
+        key: npm-cache-{{ checksum "package.json" }}
+        paths:
+          - node_modules
+
+     # Build middleman
+      - run:
+         name: Build Middleman
+         command: middleman build
+
+      - run:
+         name: Update the proper packages
+         command: sudo apt-get update
+         
+     # Install OpenJRE for S3 Website. This will move to a custom Docker container in a future release
+      - run:
+         name: Install OpenJRE
+         command: sudo apt-get install --assume-yes openjdk-7-jre
+
+     # Push to S3 and CloudFront if configured
+      - run:
+         name: Push to S3 and Invalidate
+         command: s3_website push --config-dir .deploy/development --force
+
+  "master":
+    docker:
+      - image: circleci/ruby:2.4.1-node
+    steps:
+      - checkout
+      
+      # Restore bundle cache
+      - restore_cache:
+           keys: 
+             - bundle-{{ checksum "Gemfile.lock" }}
+
+      # Run the bundle install command
+      - run: 
+         name: Bundle Install
+         command: bundle install --path vendor/bundle
+      
+      # Store the bundle cache 
+      - type: cache-save
+        key: bundle-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      # Restore bundle cache
+      - restore_cache:
+           keys: 
+             - npm-cache-{{ checksum "package.json" }}
+             - npm-cache-
+
+      # Install NPM
+      - run: 
+         name: NPM Install
+         command: npm install 
+
+      # Save an updated cache of NPM
+      - type: cache-save
+        key: npm-cache-{{ checksum "package.json" }}
+        paths:
+          - node_modules
+
+     # Build middleman
+      - run:
+         name: Build Middleman
+         command: middleman build
+
+      - run:
+         name: Update the proper packages
+         command: sudo apt-get update
+         
+         
+     # Install OpenJRE for S3 Website. This will move to a custom Docker container in a future release
+      - run:
+         name: Install OpenJRE
+         command: sudo apt-get install --assume-yes openjdk-7-jre
+
+     # Push to S3 and CloudFront if configured
+      - run:
+         name: Push to S3 and Invalidate
+         command: s3_website push --config-dir .deploy/production --force
+
+workflows: 
+  version: 2
+  build:
+    jobs:
+      - "development":
+          filters:
+            branches:
+              only: development
+      - "master":
+          filters:
+            branches:
+              only: master
+              
+# Replace with WebHooks for DatoCMS
+# notify:
+#   webhooks:
+#   - url: https://webhooks.datocms.com/fdf95abf216c5eb97ab9/deploy-results
+#   - url: https://webhooks.datocms.com/a1a979d9ddc995e40f64/deploy-results
