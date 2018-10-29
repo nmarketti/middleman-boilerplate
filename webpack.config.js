@@ -11,14 +11,13 @@ module.exports = {
         site: "./source/javascripts/site.js",
         vendor: [
                 "jquery",
-                "flexboxgrid",
-                "ScrollMagic",
-                "debug.addIndicators",
-                "animation.gsap",
-                "TweenMax",
-                "TweenLite",
-                "TimelineMax",
-                "mobile-detect"
+                // "ScrollMagic",
+                // "debug.addIndicators",
+                // "animation.gsap",
+                // "TweenMax",
+                // "TweenLite",
+                // "TimelineMax",
+                // "mobile-detect"
             ]
     },
     output: {
@@ -27,14 +26,13 @@ module.exports = {
     },
     resolve: {
         alias: {
-            "ScrollMagic": __dirname + '/node_modules/scrollmagic/scrollmagic/uncompressed/ScrollMagic',
-            "flexboxgrid": __dirname + '/node_modules/flexboxgrid/css/flexboxgrid.css',
-            "debug.addIndicators": __dirname + '/node_modules/scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators',
-            "animation.gsap": __dirname + '/node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap',
-            "TweenMax": __dirname + '/node_modules/gsap/src/uncompressed/TweenMax',
-            "TweenLite": __dirname + '/node_modules/gsap/src/uncompressed/TweenLite',
-            "TimelineMax": __dirname + '/node_modules/gsap/src/uncompressed/TimelineMax',
-            "ScrollToPlugin": __dirname + '/node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin',
+            // "ScrollMagic": __dirname + '/node_modules/scrollmagic/scrollmagic/uncompressed/ScrollMagic',
+            // "debug.addIndicators": __dirname + '/node_modules/scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators',
+            // "animation.gsap": __dirname + '/node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap',
+            // "TweenMax": __dirname + '/node_modules/gsap/src/uncompressed/TweenMax',
+            // "TweenLite": __dirname + '/node_modules/gsap/src/uncompressed/TweenLite',
+            // "TimelineMax": __dirname + '/node_modules/gsap/src/uncompressed/TimelineMax',
+            // "ScrollToPlugin": __dirname + '/node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin',
         }
     },
     module: {
